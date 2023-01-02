@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
    <title>User</title>
    <link rel="stylesheet" href="styles/default.css">
@@ -19,7 +19,6 @@
     </style>
 </head>
 <body>
-<!-- Use a container to center the content and add some padding -->
 <div class="container">
     <h1>User Information</h1>
     <p>User ID: <span th:text="${user.id}"></span></p>
@@ -27,7 +26,6 @@
     <p>Email: <span th:text="${user.email}"></span></p>
     <p>Password: <span th:text="${user.password}"></span></p>
     <p>Du skapade kontot: <span th:text="${user.create_time}"></span></p>
-    <!-- Use a div element to conditionally display the addresses section -->
     <div th:if="${addresses != null and addresses.size() > 0}">
         <h2>Adresser</h2>
         <table>
@@ -39,7 +37,6 @@
                 <th>Stad</th>
                 <th>Land</th>
             </tr>
-            <!-- Use a tr element to iterate over the addresses and display each address in a row -->
             <tr th:each="address : ${addresses}">
                 <td th:text="${address.gatuadress}"></td>
                 <td th:text="${address.gatunummer}"></td>
@@ -55,7 +52,7 @@
             <h2>Konton</h2>
             <form th:if="${user != null}" th:action="@{/createAccount}" method="post">
             <input type="hidden" name="userid" th:value="${user.id}" />
-            <button class="button" type="submit">Skapa nytt konto</button>
+            <button class="button" type="submit" style="padding: 10px 10px;">Skapa nytt konto</button>
             </form>
         </div>
         <table>
@@ -63,7 +60,6 @@
                 <th>Kontonummer</th>
                 <th>Saldo</th>
             </tr>
-            <!-- Use a tr element to iterate over the addresses and display each address in a row -->
             <tr th:each="account : ${accounts}">
                 <td th:text="${account.accountNumber}"></td>
                 <td th:text="${account.balance}"></td>
@@ -77,7 +73,6 @@
                 <th>Mobilnummer</th>
                 <th>Hemnummer</th>
             </tr>
-            <!-- Use a tr element to iterate over the addresses and display each address in a row -->
             <tr th:each="telephone : ${telephones}">
                 <td th:text="${telephone.mobilnummer}"></td>
                 <td th:text="${telephone.hemnummer}"></td>
