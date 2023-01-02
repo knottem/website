@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" >
 <head>
+   <link rel="stylesheet" type="text/css"  th:href="@{/styles/default.css}" />
    <title>User</title>
-   <link rel="stylesheet" href="styles/default.css">
     <style>
         .buttonLogout {
             background-color: #4CAF50;
@@ -15,6 +15,10 @@
             font-size: 16px;
             margin: 4px 10px;
             cursor: pointer;
+        }
+        #row{
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
