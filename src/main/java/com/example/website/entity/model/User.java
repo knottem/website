@@ -28,6 +28,9 @@ public class User {
     @Column(name = "create_time")
     private Timestamp create_time;
 
+    @Column(name = "last_access")
+    private Timestamp last_access;
+
     public User() {
     }
 
@@ -50,6 +53,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Timestamp getLast_access() {
+        return last_access;
+    }
+
+    public void setLast_access(Timestamp last_access) {
+        this.last_access = last_access;
     }
 
     public String getUsername() {
@@ -81,9 +92,10 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", Last acess=" + create_time +
+                ", password='" + password + '\'' +
+                ", create_time=" + create_time +
+                ", last_access=" + last_access +
                 '}';
     }
 }

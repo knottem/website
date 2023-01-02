@@ -1,67 +1,115 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>User</title>
+    <title>User</title>
+    <!-- Add some styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h1>User ID: <span th:text="${user.id}"></span></h1>
-<p>Username: <span th:text="${user.username}"></span></p>
-<p>Email: <span th:text="${user.email}"></span></p>
-<p>Ditt Hashade lösenord: <span th:text="${user.password}"></span></p>
-<h1>Du skapade ditt konto:  <span th:text="${user.create_time}"></span></h1>
-
-
-<div th:if="${addresses != null and addresses.size() > 0}">
-<h2>Addresser</h2>
-<ul>
-  <!-- Iterate over the addresses list and display each address -->
-  <li th:each="address : ${addresses}">
-    <!-- Display the street address and city for each address -->
-    <span th:text="${address.gatuadress}"></span>
-    <span th:text="${address.gatunummer}"></span>,
-    <span th:text="${address.postnr}"></span>
-    <span th:text="${address.postadress}"></span>,
-    <span th:text="${address.stad}"></span>,
-    <span th:text="${address.land}"></span>
-  </li>
-</ul>
-</div>
-
-<div th:if="${accounts != null and accounts.size() > 0}">
-<h2>Accounts</h2>
-<table>
-  <tr>
-    <th>Kontonummer</th>
-    <th></th>
-    <th>Saldo</th>
-  </tr>
-  <tr th:each="account : ${accounts}">
-    <td th:if="${account.accountNumber != ''}" th:text="${account.accountNumber}"></td>
-    <td></td>
-    <td th:if="${account.balance != ''}" th:text="${account.balance}"></td>
-  </tr>
-</table>
-</div>
-
-<div th:if="${telephones != null and telephones.size() > 0} ">
-  <h2>Telefonnummer</h2>
-  <table>
-    <tr>
-      <th>Mobilnummer</th>
-      <th>Hemnummer</th>
-    </tr>
-    <tr th:each="telephone : ${telephones}">
-      <td th:if="${telephone.mobilnummer != ''}" th:text="${telephone.mobilnummer}"></td>
-      <td th:if="${telephone.hemnummer != ''}" th:text="${telephone.hemnummer}"></td>
-    </tr>
-  </table>
+<!-- Use a container to center the content and add some padding -->
+<div class="container">
+    <h1>User Information</h1>
+    <p>User ID: <span th:text="${user.id}"></span></p>
+    <p>Username: <span th:text="${user.username}"></span></p>
+    <p>Email: <span th:text="${user.email}"></span></p>
+    <p>Password: <span th:text="${user.password}"></span></p>
+    <p>Account created: <span th:text="${user.create_time}"></span></p>
+    <!-- Use a div element to conditionally display the addresses section -->
+    <div th:if="${addresses != null and addresses.size() > 0}">
+        <h2>Addresses</h2>
+        <table>
+            <tr>
+                <th>Gatuadress</th>
+                <th>Gatunummer</th>
+                <th>Postnummer</th>
+                <th>PostAdress</th>
+                <th>Stad</th>
+                <th>Land</th>
+            </tr>
+            <!-- Use a tr element to iterate over the addresses and display each address in a row -->
+            <tr th:each="address : ${addresses}">
+                <td th:text="${address.gatuadress}"></td>
+                <td th:text="${address.gatunummer}"></td>
+                <td th:text="${address.postnr}"></td>
+                <td th:text="${address.postadress}"></td>
+                <td th:text="${address.stad}"></td>
+                <td th:text="${address.land}"></td>
+            </tr>
+        </table>
+    </div>
+    <div th:if="${accounts != null and accounts.size() > 0}">
+        <h2>Konton</h2>
+        <table>
+            <tr>
+                <th>Kontonummer</th>
+                <th>Saldo</th>
+            </tr>
+            <!-- Use a tr element to iterate over the addresses and display each address in a row -->
+            <tr th:each="account : ${accounts}">
+                <td th:text="${account.accountNumber}"></td>
+                <td th:text="${account.balance}"></td>
+            </tr>
+        </table>
+    </div>
+    <div th:if="${telephones != null and telephones.size() > 0} ">
+        <h2>Telefonnummer</h2>
+        <table>
+            <tr>
+                <th>Mobilnummer</th>
+                <th>Hemnummer</th>
+            </tr>
+            <!-- Use a tr element to iterate over the addresses and display each address in a row -->
+            <tr th:each="telephone : ${telephones}">
+                <td th:text="${telephone.mobilnummer}"></td>
+                <td th:text="${telephone.hemnummer}"></td>
+            </tr>
+        </table>
+    </div>
 </div>
 <p></p>
-<form th:action="@{/logout}" method="post">
-  <input type="submit" value="Logout" />
-</form>
-
-
-
+<div class="text-center">
+    <form th:action="@{/logout}" method="post">
+        <button class="button" type="submit">Logout</button>
+    </form>
+</div>
 </body>
 </html>

@@ -1,8 +1,5 @@
 package com.example.website.controller;
 
-import com.example.website.entity.model.Account;
-import com.example.website.entity.model.Address;
-import com.example.website.entity.model.Telephone;
 import com.example.website.entity.model.User;
 import com.example.website.repository.AccountRepository;
 import com.example.website.repository.AddressRepository;
@@ -15,9 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import static com.example.website.utility.Encrypt.encryptSHA3;
 
@@ -38,7 +38,7 @@ public class MyController {
         this.telephoneRepository = telephoneRepository;
     }
 
-    @GetMapping("/login")
+    @GetMapping({"/login", "/"})
     public String login(Model model) {
         if (model.containsAttribute("message")) {
             model.addAttribute("message", model.getAttribute("message"));
@@ -48,21 +48,21 @@ public class MyController {
         return "login";
     }
 
-    @PostMapping({"/login", "/"})
-    public String loginSubmit(Model model, String username, String password) {
-
+    @PostMapping("/login")
+    public String loginSubmit(@RequestParam String username, @RequestParam String password, Model model) {
         // Check the username and the encrypted password
         String pass = encryptSHA3(password);
         User user = userRepository.findByUsernameAndPassword(username, pass);
         logger.info(user);
         if (user != null) {
-            List<Address> addresses = addressRepository.findByuserid(user.getId());
-            List<Account> accounts = accountRepository.findByuserid(user.getId());
-            List<Telephone> telephones = telephoneRepository.findByUserid(user.getId());
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("CET"));
+            Timestamp timestamp = new Timestamp(calendar.getTimeInMillis());
+            user.setLast_access(timestamp);
+            userRepository.save(user);
             model.addAttribute("user", user);
-            model.addAttribute("addresses", addresses);
-            model.addAttribute("accounts", accounts);
-            model.addAttribute("telephones", telephones);
+            model.addAttribute("addresses", addressRepository.findByuserid(user.getId()));
+            model.addAttribute("accounts", accountRepository.findByuserid(user.getId()));
+            model.addAttribute("telephones", telephoneRepository.findByUserid(user.getId()));
             return "user";
         } else {
             model.addAttribute("message", "Invalid username or password. Please try again.");
