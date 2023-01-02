@@ -1,33 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>User</title>
-    <!-- Add some styling -->
+   <title>User</title>
+   <link rel="stylesheet" href="styles/default.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-        .button {
+        .buttonLogout {
             background-color: #4CAF50;
             border: none;
             color: white;
@@ -36,11 +13,8 @@
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
-            margin: 4px 2px;
+            margin: 4px 10px;
             cursor: pointer;
-        }
-        .text-center {
-            text-align: center;
         }
     </style>
 </head>
@@ -55,13 +29,13 @@
     <p>Du skapade kontot: <span th:text="${user.create_time}"></span></p>
     <!-- Use a div element to conditionally display the addresses section -->
     <div th:if="${addresses != null and addresses.size() > 0}">
-        <h2>Addresses</h2>
+        <h2>Adresser</h2>
         <table>
             <tr>
                 <th>Gatuadress</th>
                 <th>Gatunummer</th>
                 <th>Postnummer</th>
-                <th>PostAdress</th>
+                <th>Post address</th>
                 <th>Stad</th>
                 <th>Land</th>
             </tr>
@@ -77,7 +51,13 @@
         </table>
     </div>
     <div th:if="${accounts != null and accounts.size() > 0}">
-        <h2>Konton</h2>
+        <div id="row">
+            <h2>Konton</h2>
+            <form th:if="${user != null}" th:action="@{/createAccount}" method="post">
+            <input type="hidden" name="userid" th:value="${user.id}" />
+            <button class="button" type="submit">Skapa nytt konto</button>
+            </form>
+        </div>
         <table>
             <tr>
                 <th>Kontonummer</th>
@@ -105,16 +85,10 @@
         </table>
     </div>
 </div>
-<div class="text-center">
-    <form th:if="${user != null}" th:action="@{/createAccount}" method="post">
-        <input type="hidden" name="userid" th:value="${user.id}" />
-        <button class="button" type="submit">Skapa konto</button>
-    </form>
-</div>
 <p></p>
 <div class="text-center">
     <form th:action="@{/logout}" method="post">
-        <button class="button" type="submit">Logout</button>
+        <button class="buttonLogout" type="submit">Logga ut</button>
     </form>
 </div>
 
