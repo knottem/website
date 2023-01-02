@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>User</title>
+</head>
+<body>
+<h1>User ID: <span th:text="${user.id}"></span></h1>
+<p>Username: <span th:text="${user.username}"></span></p>
+<p>Email: <span th:text="${user.email}"></span></p>
+<p>Ditt Hashade lösenord: <span th:text="${user.password}"></span></p>
+<h1>Du skapade ditt konto:  <span th:text="${user.create_time}"></span></h1>
+
+
+<div th:if="${addresses != null and addresses.size() > 0}">
+<h2>Addresser</h2>
+<ul>
+  <!-- Iterate over the addresses list and display each address -->
+  <li th:each="address : ${addresses}">
+    <!-- Display the street address and city for each address -->
+    <span th:text="${address.gatuadress}"></span>
+    <span th:text="${address.gatunummer}"></span>,
+    <span th:text="${address.postnr}"></span>
+    <span th:text="${address.postadress}"></span>,
+    <span th:text="${address.stad}"></span>,
+    <span th:text="${address.land}"></span>
+  </li>
+</ul>
+</div>
+
+<div th:if="${accounts != null and accounts.size() > 0}">
+<h2>Accounts</h2>
+<table>
+  <tr>
+    <th>Kontonummer</th>
+    <th></th>
+    <th>Saldo</th>
+  </tr>
+  <tr th:each="account : ${accounts}">
+    <td th:if="${account.accountNumber != ''}" th:text="${account.accountNumber}"></td>
+    <td></td>
+    <td th:if="${account.balance != ''}" th:text="${account.balance}"></td>
+  </tr>
+</table>
+</div>
+
+<div th:if="${telephones != null and telephones.size() > 0} ">
+  <h2>Telefonnummer</h2>
+  <table>
+    <tr>
+      <th>Mobilnummer</th>
+      <th>Hemnummer</th>
+    </tr>
+    <tr th:each="telephone : ${telephones}">
+      <td th:if="${telephone.mobilnummer != ''}" th:text="${telephone.mobilnummer}"></td>
+      <td th:if="${telephone.hemnummer != ''}" th:text="${telephone.hemnummer}"></td>
+    </tr>
+  </table>
+</div>
+<p></p>
+<form th:action="@{/logout}" method="post">
+  <input type="submit" value="Logout" />
+</form>
+
+
+
+</body>
+</html>
