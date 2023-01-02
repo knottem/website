@@ -52,7 +52,7 @@
     <p>Username: <span th:text="${user.username}"></span></p>
     <p>Email: <span th:text="${user.email}"></span></p>
     <p>Password: <span th:text="${user.password}"></span></p>
-    <p>Account created: <span th:text="${user.create_time}"></span></p>
+    <p>Du skapade kontot: <span th:text="${user.create_time}"></span></p>
     <!-- Use a div element to conditionally display the addresses section -->
     <div th:if="${addresses != null and addresses.size() > 0}">
         <h2>Addresses</h2>
@@ -105,11 +105,18 @@
         </table>
     </div>
 </div>
+<div class="text-center">
+    <form th:if="${user != null}" th:action="@{/createAccount}" method="post">
+        <input type="hidden" name="userid" th:value="${user.id}" />
+        <button class="button" type="submit">Skapa konto</button>
+    </form>
+</div>
 <p></p>
 <div class="text-center">
     <form th:action="@{/logout}" method="post">
         <button class="button" type="submit">Logout</button>
     </form>
 </div>
+
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.example.website.controller;
 
+import com.example.website.dao.AccountDatabase;
+import com.example.website.entity.model.Account;
 import com.example.website.entity.model.User;
 import com.example.website.repository.AccountRepository;
 import com.example.website.repository.AddressRepository;
@@ -10,13 +12,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 import static com.example.website.utility.Encrypt.encryptSHA3;
@@ -30,12 +31,14 @@ public class MyController {
     private final AddressRepository addressRepository;
     private final AccountRepository accountRepository;
     private final TelephoneRepository telephoneRepository;
+    private final AccountDatabase accountDatabase;
 
-    public MyController(UserRepository userRepository, AddressRepository addressRepository, AccountRepository accountRepository, TelephoneRepository telephoneRepository) {
+    public MyController(UserRepository userRepository, AddressRepository addressRepository, AccountRepository accountRepository, TelephoneRepository telephoneRepository, AccountDatabase dao) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.accountRepository = accountRepository;
         this.telephoneRepository = telephoneRepository;
+        this.accountDatabase = dao;
     }
 
     @GetMapping({"/login", "/"})
@@ -77,8 +80,6 @@ public class MyController {
         return "redirect:/login";
     }
 
-
-
     @GetMapping("/home")
     public String home(Model model) {
         // Add attributes to the model and return the name of the HTML template
@@ -93,4 +94,22 @@ public class MyController {
         model.addAttribute("message", "An error occurred. Please try again.");
         return "error";
     }
+
+    @PostMapping("/createAccount")
+    public String createAccount(Model model, int userid) {
+
+        Account account = new Account();
+        int accountNumber = accountDatabase.getAccountNumber();
+        account.setAccountNumber(accountNumber);
+        account.setBalance(0);
+        account.setUserId(userid);
+        accountRepository.save(account);
+
+        model.addAttribute("user", userRepository.findById(userid));
+        model.addAttribute("accounts", accountRepository.findByuserid(userid));
+        model.addAttribute("addresses", addressRepository.findByuserid(userid));
+        model.addAttribute("telephones", telephoneRepository.findByUserid(userid));
+        return "user";
+    }
 }
+
